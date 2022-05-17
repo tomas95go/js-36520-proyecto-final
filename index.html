@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -8,32 +8,70 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
+    <link rel="stylesheet" href="./index.css" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "ash-gray": "#AEB4A9",
+              "desert-sand": "#E0C1B3",
+              "pastel-pink": "#D89A9E",
+              puce: "#C37D92",
+              "deep-taupe": "#846267",
+            },
+            fontFamily: {
+              friends: ["FRIENDS", "serif"],
+            },
+          },
+        },
+      };
+    </script>
     <title>Friends Quizz</title>
   </head>
-  <body>
-    <header>
-      <h1 class="text-center">Friends Quizz</h1>
-    </header>
-
+  <body class="bg-desert-sand">
     <main>
-      <section id="welcome">
-        <div class="text-center">
-          <h2>
-            ¿Cuánto sabes de Friends? Poné a prueba tu conocimiento de la
-            popular serie de TV con este minijuego
-          </h2>
-        </div>
+      <section
+        id="welcome"
+        class="flex flex-col justify-center items-center content-center h-screen"
+      >
+        <header>
+          <h1 class="mb-7 text-center text-7xl font-friends">FRIENDS</h1>
+        </header>
+        <div
+          class="flex flex-col content-evenly justify-evenly box-border w-3/6 h-3/6 border-2 border-double border-black rounded-lg text-pastel-pink"
+        >
+          <div class="text-center">
+            <h2>
+              ¿Cuánto sabes de Friends? Poné a prueba tu conocimiento de la
+              popular serie de TV con este minijuego
+            </h2>
+          </div>
 
-        <div class="text-center">
-          <h3>Reglas</h3>
-          <ol class="list-inside list-decimal">
-            <li>¡No hagas trampa!</li>
-            <li>Respetar la regla N° 1</li>
-          </ol>
-        </div>
-        <div class="text-center">
-          <a href="#player-form">¡Empezar!</a>
+          <div class="text-center">
+            <h3>Reglas</h3>
+            <ol class="list-inside list-decimal">
+              <li>¡No hagas trampa!</li>
+              <li>Respetar la regla N° 1</li>
+            </ol>
+          </div>
+          <div class="flex justify-center">
+            <div class="box-border w-72 bg-puce rounded-lg overflow-hidden">
+              <img
+                class="object-cover"
+                src="https://i.giphy.com/media/f9YXWSkRdJ50PeO3a4/giphy.gif"
+                alt="friends"
+              />
+            </div>
+          </div>
+          <div class="flex justify-center">
+            <div
+              class="box-sizing w-24 border-2 rounded text-center hover:bg-yellow-100"
+            >
+              <a href="#player-form">¡Empezar!</a>
+            </div>
+          </div>
         </div>
       </section>
 
