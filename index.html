@@ -75,13 +75,34 @@
         </div>
       </section>
 
-      <section id="player-form">
-        <div>
+      <section
+        id="player-form"
+        class="flex flex-col justify-center items-center content-center h-screen"
+      >
+        <div
+          class="flex flex-col content-evenly justify-evenly box-border w-3/6 h-3/6 border-2 border-double border-black rounded-lg text-pastel-pink"
+        >
           <form>
-            <h3>¡Vamos a rellenar tus datos antes de comenzar!</h3>
-            <h3>Nombre</h3>
-            <h3>Conocimiento en Friends</h3>
-            <button>¡Estoy listo!</button>
+            <h3 class="text-center">
+              ¡Vamos a rellenar tus datos antes de comenzar!
+            </h3>
+            <label for="name">Nombre:</label>
+            <input type="text" name="name" />
+            <label for="friends-knowledge">Conocimiento en Friends:</label>
+            <select>
+              <option value="">Elija una opción...</option>
+              <option value="None">Nada</option>
+              <option value="Little">Poco</option>
+              <option value="Medium">Mediano</option>
+              <option value="Expert">Experto</option>
+            </select>
+            <a href="#warm-up">
+              <div
+                class="box-sizing w-24 border-2 rounded text-center hover:bg-yellow-100"
+              >
+                ¡Estoy listo!
+              </div>
+            </a>
           </form>
         </div>
       </section>
