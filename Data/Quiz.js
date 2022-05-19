@@ -1,4 +1,4 @@
-const quiz = {
+export const QuizData = {
   quotes: [
     {
       "score-top": 10,
