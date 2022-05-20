@@ -5,7 +5,15 @@ export class Quiz {
     this.score = score;
   }
 
-  increment() {
+  addQuestion(question) {
+    return this.questions.push(question);
+  }
+
+  addQuote(quote) {
+    return this.quotes.push(quote);
+  }
+
+  incrementScore() {
     return this.score++;
   }
 
