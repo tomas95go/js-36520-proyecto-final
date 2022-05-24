@@ -77,6 +77,23 @@ export const makeQuestionCardBody = () => {
   return $cardBody;
 };
 
+export const makeCardFooter = (text, type, formId) => {
+  const $cardFooter = document.getElementById(`card-footer`);
+
+  const $button = document.createElement(`button`);
+
+  if (type === `question`) {
+    $button.textContent = text;
+    $button.setAttribute(`form`, formId);
+  }
+
+  $button.classList.add(`button`, `is-dark`, `m-2`);
+
+  $cardFooter.appendChild($button);
+
+  return $cardFooter;
+};
+
 export const changeCardTitle = (title) => {
   const $title = document.getElementById(`card-title`);
   $title.textContent = title;

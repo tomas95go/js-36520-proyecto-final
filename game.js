@@ -1,18 +1,19 @@
 //Alumno: González Oviedo Tomás Emiliano
 console.log(`Probando!`);
 
-import { makeQuestionCardBody } from "./card.js";
+import { makeQuestionCardBody, makeCardFooter } from "./card.js";
 
 makeQuestionCardBody();
+makeCardFooter(`Siguiente`, `question`, `options-form`);
 
-/*const $form = document.getElementById("options-form");
+const $form = document.getElementById("options-form");
 
 $form.addEventListener("submit", (e) => {
   e.preventDefault();
   const formPotencia = new FormData(e.target);
   const question = formPotencia.get("question");
   console.log(question);
-});*/
+});
 
 /*
   To do:
