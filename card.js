@@ -45,7 +45,8 @@ export const makeQuestionCardBody = () => {
   );
   $questionWrapper.appendChild($mainOptionsColumn);
 
-  const $optionsWrapper = document.createElement("div");
+  const $optionsWrapper = document.createElement("form");
+  $optionsWrapper.setAttribute(`id`, `options-form`);
   $optionsWrapper.classList.add(
     `columns`,
     `is-flex`,
