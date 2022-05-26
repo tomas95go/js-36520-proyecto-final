@@ -1,3 +1,16 @@
+const makeCardContent = ($cardBody) => {
+  const $content = document.createElement("div");
+  $content.classList.add(`content`);
+  $cardBody.appendChild($content);
+  return $content;
+};
+
+const setWelcomeMessage = (message) => {
+  const $message = document.createElement(`h2`);
+  $message.textContent = message;
+  return $message;
+};
+
 export const makeQuestionCardBody = () => {
   const $cardBody = document.getElementById(`card-body`);
 
@@ -77,15 +90,20 @@ export const makeQuestionCardBody = () => {
   return $cardBody;
 };
 
-export const makeCardFooter = (text, type, formId) => {
+export const makeCardFooter = (text, type, formId, event) => {
   const $cardFooter = document.getElementById(`card-footer`);
 
   const $button = document.createElement(`button`);
 
   if (type === `question`) {
-    $button.textContent = text;
     $button.setAttribute(`form`, formId);
   }
+
+  if (type === `welcome`) {
+    $button.addEventListener(`click`, event);
+  }
+
+  $button.textContent = text;
 
   $button.classList.add(`button`, `is-dark`, `m-2`);
 
@@ -98,4 +116,28 @@ export const changeCardTitle = (title) => {
   const $title = document.getElementById(`card-title`);
   $title.textContent = title;
   return $title;
+};
+
+export const showWelcomeCard = () => {
+  changeCardTitle(`FRIENDS QUIZ`);
+  const $cardBody = document.getElementById(`card-body`);
+  const $cardContent = makeCardContent($cardBody);
+  const $welcomeMessage = setWelcomeMessage(
+    `Bienvenido, con este pequeño juego vamos a poner a prueba tu conocimiento en FRIENDS, la famosa serie de TV.`
+  );
+  $cardContent.appendChild($welcomeMessage);
+  makeCardFooter(`¡Comenzar!`, `welcome`, ``, showInstructionsCard);
+};
+
+const resetCardContent = () => {
+  const $cardBody = document.getElementById(`card-body`);
+  while ($cardBody.firstChild) {
+    $cardBody.removeChild($cardBody.firstChild);
+  }
+  return $cardBody;
+};
+
+const showInstructionsCard = () => {
+  resetCardContent();
+  makeQuestionCardBody();
 };

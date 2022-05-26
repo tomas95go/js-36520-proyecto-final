@@ -1,9 +1,15 @@
 //Alumno: González Oviedo Tomás Emiliano
 console.log(`Probando!`);
 
-import { makeQuestionCardBody, makeCardFooter } from "./card.js";
+import {
+  makeQuestionCardBody,
+  makeCardFooter,
+  showWelcomeCard,
+} from "./card.js";
 
-makeQuestionCardBody();
+showWelcomeCard();
+
+/*makeQuestionCardBody();
 makeCardFooter(`Siguiente`, `question`, `options-form`);
 
 const $form = document.getElementById("options-form");
@@ -15,7 +21,7 @@ $form.addEventListener("submit", (e) => {
   console.log(question);
 });
 
-/*
+
   To do:
 
   1_ Do "welcome_card".
