@@ -11,7 +11,48 @@ const setWelcomeMessage = (message) => {
   return $message;
 };
 
+const displayInstructions = (instructions) => {
+  const $instructions = document.createElement(`ol`);
+  $instructions.setAttribute(`type`, `1`);
+  instructions.forEach((instruction) => {
+    const $instruction = document.createElement(`li`);
+    const $text = document.createTextNode(instruction);
+    $instruction.appendChild($text);
+    $instructions.appendChild($instruction);
+  });
+  return $instructions;
+};
+
+const displayPlayerForm = ($cardContent) => {
+  const $playerForm = document.createElement(`form`);
+  $cardContent.appendChild($playerForm);
+
+  const $field = document.createElement(`div`);
+  $field.classList.add(`field`);
+  $playerForm.appendChild($field);
+
+  const $label = document.createElement(`label`);
+  $label.classList.add(`label`);
+  $label.textContent = `Nombre:`;
+  $field.appendChild($label);
+
+  const $control = document.createElement(`div`);
+  $control.classList.add(`control`);
+  $field.appendChild($control);
+
+  const $input = document.createElement(`input`);
+  $input.classList.add(`input`);
+  $input.setAttribute("name", "name");
+  $input.setAttribute(`type`, `text`);
+  $input.setAttribute(`placeholder`, `Nombre`);
+  $control.appendChild($input);
+
+  return $playerForm;
+};
+
 export const makeQuestionCardBody = () => {
+  resetCardContent();
+  resetCardFooter();
   const $cardBody = document.getElementById(`card-body`);
 
   const $content = document.createElement("div");
@@ -103,6 +144,10 @@ export const makeCardFooter = (text, type, formId, event) => {
     $button.addEventListener(`click`, event);
   }
 
+  if (type === `instructions`) {
+    $button.addEventListener(`click`, event);
+  }
+
   $button.textContent = text;
 
   $button.classList.add(`button`, `is-dark`, `m-2`);
@@ -126,7 +171,7 @@ export const showWelcomeCard = () => {
     `Bienvenido, con este pequeño juego vamos a poner a prueba tu conocimiento en FRIENDS, la famosa serie de TV.`
   );
   $cardContent.appendChild($welcomeMessage);
-  makeCardFooter(`¡Comenzar!`, `welcome`, ``, showInstructionsCard);
+  makeCardFooter(`Siguiente`, `welcome`, ``, showInstructionsCard);
 };
 
 const resetCardContent = () => {
@@ -137,7 +182,35 @@ const resetCardContent = () => {
   return $cardBody;
 };
 
+const resetCardFooter = () => {
+  const $cardFooter = document.getElementById(`card-footer`);
+  while ($cardFooter.firstChild) {
+    $cardFooter.removeChild($cardFooter.firstChild);
+  }
+  return $cardFooter;
+};
+
+const showPlayerFormCard = () => {
+  resetCardContent();
+  resetCardFooter();
+  changeCardTitle(`Complete los datos`);
+  const $cardBody = document.getElementById(`card-body`);
+  const $cardContent = makeCardContent($cardBody);
+  const $playerForm = displayPlayerForm($cardContent);
+  makeCardFooter(`¡Empezar!`, `welcome`, ``, makeQuestionCardBody);
+};
+
 const showInstructionsCard = () => {
   resetCardContent();
-  makeQuestionCardBody();
+  resetCardFooter();
+  changeCardTitle(`Instrucciones`);
+  const $cardBody = document.getElementById(`card-body`);
+  const $cardContent = makeCardContent($cardBody);
+  const $instructions = displayInstructions([
+    "Elegir una de las 3 opciones: A, B o C.",
+    "No hacer trampa",
+    "Seguir la regla N°2",
+  ]);
+  $cardContent.appendChild($instructions);
+  makeCardFooter(`Entendido`, `welcome`, ``, showPlayerFormCard);
 };
