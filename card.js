@@ -1,3 +1,5 @@
+let questionId = 1;
+
 const makeCardContent = ($cardBody) => {
   const $content = document.createElement("div");
   $content.classList.add(`content`);
@@ -50,9 +52,7 @@ const displayPlayerForm = ($cardContent) => {
   return $playerForm;
 };
 
-export const makeQuestionCardBody = () => {
-  resetCardContent();
-  resetCardFooter();
+export const makeQuestionCardBody = (gif, options) => {
   const $cardBody = document.getElementById(`card-body`);
 
   const $content = document.createElement("div");
@@ -84,10 +84,7 @@ export const makeQuestionCardBody = () => {
   $cardGif.appendChild($figure);
 
   const $img = document.createElement("img");
-  $img.setAttribute(
-    `src`,
-    `https://c.tenor.com/mkfEFX1eXJoAAAAC/gunther-smirk.gif`
-  );
+  $img.setAttribute(`src`, gif);
   $img.setAttribute(`alt`, `friends character`);
   $figure.appendChild($img);
 
@@ -108,7 +105,7 @@ export const makeQuestionCardBody = () => {
   );
   $mainOptionsColumn.appendChild($optionsWrapper);
 
-  for (let x = 0; x < 3; x++) {
+  Object.keys(options).forEach((option) => {
     const $singleOptionColumn = document.createElement("div");
     $singleOptionColumn.classList.add(`column`);
     $optionsWrapper.appendChild($singleOptionColumn);
@@ -120,14 +117,13 @@ export const makeQuestionCardBody = () => {
     const $optionInput = document.createElement("input");
     $optionInput.setAttribute(`type`, `radio`);
     $optionInput.setAttribute(`name`, `question`);
-    $optionInput.setAttribute(`value`, x);
+    $optionInput.setAttribute(`value`, options[option]);
     $optionLabel.appendChild($optionInput);
 
     const $span = document.createElement("span");
-    $span.textContent = ` ${x} `;
+    $span.textContent = `${options[option]}`;
     $optionLabel.appendChild($span);
-  }
-
+  });
   return $cardBody;
 };
 
@@ -138,6 +134,7 @@ export const makeCardFooter = (text, type, formId, event) => {
 
   if (type === `question`) {
     $button.setAttribute(`form`, formId);
+    $button.addEventListener(`click`, event);
   }
 
   if (type === `welcome`) {
@@ -197,7 +194,7 @@ const showPlayerFormCard = () => {
   const $cardBody = document.getElementById(`card-body`);
   const $cardContent = makeCardContent($cardBody);
   const $playerForm = displayPlayerForm($cardContent);
-  makeCardFooter(`¡Empezar!`, `welcome`, ``, makeQuestionCardBody);
+  makeCardFooter(`¡Empezar!`, `welcome`, ``, showQuestionCard);
 };
 
 const showInstructionsCard = () => {
@@ -213,4 +210,36 @@ const showInstructionsCard = () => {
   ]);
   $cardContent.appendChild($instructions);
   makeCardFooter(`Entendido`, `welcome`, ``, showPlayerFormCard);
+};
+
+const loadNextQuestion = () => {
+  questionId++;
+  showQuestionCard();
+};
+const showQuestionCard = async () => {
+  resetCardContent();
+  resetCardFooter();
+  const data = await getQuiz();
+  const question = data.quiz.questions.find(
+    (question) => question.id === questionId
+  );
+  if (question.last) {
+    console.log(`No hay mas preguntas!`);
+  } else {
+    changeCardTitle(question.question);
+    makeQuestionCardBody(question.gif, question["possible-answers"]);
+    makeCardFooter(`Siguiente`, `question`, `options-form`, loadNextQuestion);
+    const $form = document.getElementById("options-form");
+    $form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const formPotencia = new FormData(e.target);
+      const question = formPotencia.get("question");
+    });
+  }
+};
+
+const getQuiz = async () => {
+  const response = await fetch(`./data/quiz.json`);
+  const quiz = await response.json();
+  return quiz;
 };
