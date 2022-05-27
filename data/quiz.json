@@ -29,56 +29,67 @@
     ],
     "questions": [
       {
+        "id": 1,
         "question": "¿Quién es este personaje?",
         "gif": "https://c.tenor.com/mkfEFX1eXJoAAAAC/gunther-smirk.gif",
-        "possible-answer": {
+        "possible-answers": {
           "A": "Mark",
           "B": "Ross",
           "C": "Gunther"
         },
-        "correct-answer": "C"
+        "correct-answer": "C",
+        "last": false
       },
       {
+        "id": 2,
         "question": "¿En que ciudad está ambientada la serie?",
         "gif": "https://giffiles.alphacoders.com/372/37243.gif",
-        "possible-answer": {
+        "possible-answers": {
           "A": "Baltimore",
           "B": "New York",
           "C": "Chicago"
         },
-        "correct-answer": "B"
+        "correct-answer": "B",
+        "last": false
       },
       {
+        "id": 3,
         "question": "¿Quién es la actriz que interpreta a Rachel?",
         "gif": "https://i.pinimg.com/originals/51/5e/70/515e70cdf948430d24432477e24ace81.gif",
-        "possible-answer": {
+        "possible-answers": {
           "A": "Jennifer Aniston",
           "B": "Jennifer Lopez",
           "C": "Jennifer Lawerence"
         },
-        "correct-answer": "A"
+        "correct-answer": "A",
+        "last": false
       },
       {
+        "id": 4,
         "question": "¿Quién es el actor que interpreta a Ross?",
         "gif": "https://i.pinimg.com/originals/0f/49/e4/0f49e48f2167cd58263b482c588b4b65.gif",
-        "possible-answer": {
+        "possible-answers": {
           "A": "David Schwimmer",
           "B": "David Beckam",
           "C": "David Bowie"
         },
-        "correct-answer": "A"
+        "correct-answer": "A",
+        "last": false
       },
       {
+        "id": 5,
         "question": "¿Cuántas temporadas tiene FRIENDS?",
         "gif": "https://media.giphy.com/media/RhwvoPCSTYHiLwDG56/giphy.gif",
-        "possible-answer": {
+        "possible-answers": {
           "A": 10,
           "B": 8,
           "C": 5
         },
-        "correct-answer": "A"
+        "correct-answer": "A",
+        "last": false
       },
       {
+        "id": 6,
         "question": "¿Cómo se llama el café donde se suelen juntar los protagonistas?",
         "gif": "https://images.squarespace-cdn.com/content/v1/5411e588e4b0d891b95c6b39/1413310941372-ADFQP2RP653O4ITLF7GY/friendscentralperk.gif",
         "possible-answers": {
@@ -86,9 +97,11 @@
           "B": "Central Garden",
           "C": "Central Perk"
         },
-        "correct-answer": "C"
+        "correct-answer": "C",
+        "last": false
       },
       {
+        "id": 7,
         "question": "¿Quién es el actor que interpreta a Joey?",
         "gif": "https://c.tenor.com/y3KNae4PPZoAAAAC/joey-friends-friends.gif",
         "possible-answers": {
@@ -96,9 +109,11 @@
           "B": "Matt Damon",
           "C": "Matt Reeves"
         },
-        "correct-answer": "A"
+        "correct-answer": "A",
+        "last": false
       },
       {
+        "id": 8,
         "question": "¿Cuál es el apellido de Chandler?",
         "gif": "https://i.gifer.com/WbNV.gif",
         "possible-answers": {
@@ -106,9 +121,11 @@
           "B": "Beng",
           "C": "Bing"
         },
-        "correct-answer": "C"
+        "correct-answer": "C",
+        "last": false
       },
       {
+        "id": 9,
         "question": "¿Cuál fue el primer beso de Monica Geller?",
         "gif": "https://thumbs.gfycat.com/AfraidYearlyBumblebee-max-1mb.gif",
         "possible-answers": {
@@ -116,9 +133,11 @@
           "B": "Richard Burke",
           "C": "Chandler Bing"
         },
-        "correct-answer": "A"
+        "correct-answer": "A",
+        "last": false
       },
       {
+        "id": 10,
         "question": "¿Cómo se llama la novela en donde actua Joey?",
         "gif": "https://i.pinimg.com/originals/73/ca/db/73cadb835a45b3fcb062a336edb3fb72.gif",
         "possible-answers": {
@@ -126,9 +145,11 @@
           "B": "Days of our lives",
           "C": "House"
         },
-        "correct-answer": "B"
+        "correct-answer": "B",
+        "last": false
       },
       {
+        "id": 11,
         "question": "¿Cuántos hijos tuvo Phoebe Buffay?",
         "gif": "https://c.tenor.com/4mOcK7udK5UAAAAC/phoebe-buffay-pregnant.gif",
         "possible-answers": {
@@ -136,7 +157,8 @@
           "B": 2,
           "C": 1
         },
-        "correct-answer": "A"
+        "correct-answer": "A",
+        "last": true
       }
     ]
   }
