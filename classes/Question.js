@@ -1,7 +1,10 @@
 export class Question {
-  constructor(question, possibleAnswers, correctAnswer) {
+  constructor(id, question, gif, possibleAnswers, correctAnswer, last) {
+    this.id = id;
     this.question = question;
+    this.gif = gif;
     this.possibleAnswers = possibleAnswers;
     this.correctAnswer = correctAnswer;
+    this.last = last;
   }
 }
