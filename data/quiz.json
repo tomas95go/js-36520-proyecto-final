@@ -1,27 +1,40 @@
 {
   "quiz": {
     "instructions": [
-      "Elegir una de las 3 opciones: A, B o C.",
-      "No hacer trampa.",
-      "Seguir la regla N°2."
+      {
+        "id": 1,
+        "instruction": "Elegir una de las 3 opciones: A, B o C."
+      },
+      {
+        "id": 2,
+        "instruction": "No hacer trampa."
+      },
+      {
+        "id": 3,
+        "instruction": "Seguir la regla N°2."
+      }
     ],
     "quotes": [
       {
+        "id": 1,
         "score-top": 10,
         "score-bottom": 10,
         "quote": "¡Sos un verdadero fan de Friends!"
       },
       {
+        "id": 2,
         "score-top": 9,
         "score-bottom": 8,
         "quote": "¡Bastante bien, aunque puede ser mejor!"
       },
       {
+        "id": 3,
         "score-top": 7,
         "score-bottom": 6,
         "quote": "¡Bueno bueno, raspando pero pasaste!"
       },
       {
+        "id": 4,
         "score-top": 5,
         "score-bottom": 0,
         "quote": "Flojo. Intentaste, no sé... ¿Ver la serie?"
@@ -147,18 +160,6 @@
         },
         "correct-answer": "B",
         "last": false
-      },
-      {
-        "id": 11,
-        "question": "¿Cuántos hijos tuvo Phoebe Buffay?",
-        "gif": "https://c.tenor.com/4mOcK7udK5UAAAAC/phoebe-buffay-pregnant.gif",
-        "possible-answers": {
-          "A": 3,
-          "B": 2,
-          "C": 1
-        },
-        "correct-answer": "A",
-        "last": true
       }
     ]
   }
