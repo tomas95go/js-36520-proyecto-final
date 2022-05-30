@@ -1,10 +1,9 @@
 export class Quiz {
-  gameOver = false;
-  rematch = false;
-
-  constructor(questions, quotes, instructions) {
+  constructor(questions, quotes, instructions, gameOver, rematch) {
     this.questions = questions;
     this.quotes = quotes;
     this.instructions = instructions;
+    this.gameOver = gameOver;
+    this.rematch = rematch;
   }
 }

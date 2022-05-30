@@ -1,5 +1,6 @@
 export class Quote {
-  constructor(scoreTop, scoreBottom, quote) {
+  constructor(id, scoreTop, scoreBottom, quote) {
+    this.id = id;
     this.scoreTop = scoreTop;
     this.scoreBottom = scoreBottom;
     this.quote = quote;

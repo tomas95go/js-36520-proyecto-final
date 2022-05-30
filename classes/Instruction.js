@@ -1,5 +1,6 @@
 export class Instruction {
-  constructor(description) {
-    this.description = description;
+  constructor(id, instruction) {
+    this.id = id;
+    this.instruction = instruction;
   }
 }
