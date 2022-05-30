@@ -1,4 +1,7 @@
+import { Player } from "./classes/Player.js";
+const player = new Player(`Tomas`, 0, []);
 let questionId = 1;
+const userAnswers = [];
 
 const makeCardContent = ($cardBody) => {
   const $content = document.createElement("div");
@@ -117,7 +120,7 @@ export const makeQuestionCardBody = (gif, options) => {
     const $optionInput = document.createElement("input");
     $optionInput.setAttribute(`type`, `radio`);
     $optionInput.setAttribute(`name`, `question`);
-    $optionInput.setAttribute(`value`, options[option]);
+    $optionInput.setAttribute(`value`, option);
     $optionLabel.appendChild($optionInput);
 
     const $span = document.createElement("span");
@@ -132,18 +135,9 @@ export const makeCardFooter = (text, type, formId, event) => {
 
   const $button = document.createElement(`button`);
 
-  if (type === `question`) {
-    $button.setAttribute(`form`, formId);
-    $button.addEventListener(`click`, event);
-  }
+  $button.setAttribute(`form`, formId);
 
-  if (type === `welcome`) {
-    $button.addEventListener(`click`, event);
-  }
-
-  if (type === `instructions`) {
-    $button.addEventListener(`click`, event);
-  }
+  $button.addEventListener(`click`, event);
 
   $button.textContent = text;
 
@@ -161,6 +155,8 @@ export const changeCardTitle = (title) => {
 };
 
 export const showWelcomeCard = () => {
+  resetCardContent();
+  resetCardFooter();
   changeCardTitle(`FRIENDS QUIZ`);
   const $cardBody = document.getElementById(`card-body`);
   const $cardContent = makeCardContent($cardBody);
@@ -224,16 +220,21 @@ const showQuestionCard = async () => {
     (question) => question.id === questionId
   );
   if (question.last) {
-    console.log(`No hay mas preguntas!`);
+    data.quiz.questions.forEach((question, i) =>
+      question["correct-answer"] === userAnswers[i] ? player.score++ : false
+    );
+    showScoreCard();
   } else {
     changeCardTitle(question.question);
     makeQuestionCardBody(question.gif, question["possible-answers"]);
-    makeCardFooter(`Siguiente`, `question`, `options-form`, loadNextQuestion);
+    makeCardFooter(`Siguiente`, `question`, `options-form`);
     const $form = document.getElementById("options-form");
     $form.addEventListener("submit", (e) => {
       e.preventDefault();
       const formPotencia = new FormData(e.target);
-      const question = formPotencia.get("question");
+      const answer = formPotencia.get("question");
+      userAnswers.push(answer);
+      loadNextQuestion();
     });
   }
 };
@@ -242,4 +243,19 @@ const getQuiz = async () => {
   const response = await fetch(`./data/quiz.json`);
   const quiz = await response.json();
   return quiz;
+};
+
+const showScoreCard = () => {
+  resetCardContent();
+  resetCardFooter();
+  changeCardTitle(`Game Over`);
+  const $cardBody = document.getElementById(`card-body`);
+  const $cardContent = makeCardContent($cardBody);
+  const $gameOverMessage = setWelcomeMessage(
+    `Felicidades ${player.name}, tu puntaje es de: ${player.score}`
+  );
+  player.score = 0;
+  questionId = 1;
+  $cardContent.appendChild($gameOverMessage);
+  makeCardFooter(`¡Empezar de nuevo!`, ``, ``, showWelcomeCard);
 };
