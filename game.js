@@ -1,7 +1,55 @@
 import { Player } from "./classes/Player.js";
-const player = new Player(`Tomas`, 0, []);
-let questionId = 1;
-const userAnswers = [];
+import { Instruction } from "./classes/Instruction.js";
+import { Question } from "./classes/Question.js";
+import { Quote } from "./classes/Quote.js";
+import { Quiz } from "./classes/Quiz.js";
+
+const getQuizData = async () => {
+  const response = await fetch(`./data/quiz.json`);
+  const data = await response.json();
+  return data;
+};
+
+const setUpQuiz = async () => {
+  const data = await getQuizData();
+  const instructions = data.quiz.instructions.map(
+    (instruction) => new Instruction(instruction.id, instruction.instruction)
+  );
+  const questions = data.quiz.questions.map(
+    (question) =>
+      new Question(
+        question.id,
+        question.question,
+        question.gif,
+        question["possible-answers"],
+        question["correct-answer"]
+      )
+  );
+  const quotes = data.quiz.quotes.map(
+    (quote) =>
+      new Quote(
+        quote.id,
+        quote["score-top"],
+        quote["score-bottom"],
+        quote.quote
+      )
+  );
+  const gameOver = false;
+  const isReady = true;
+  const quiz = new Quiz(questions, quotes, instructions, gameOver, isReady);
+  return quiz;
+};
+
+const setUpPlayer = () => {
+  const player = new Player(``, 0, []);
+  return player;
+};
+
+export const startGame = async () => {
+  const quiz = await setUpQuiz();
+  const player = setUpPlayer();
+  showWelcomeCard(quiz, player);
+};
 
 const makeCardContent = ($cardBody) => {
   const $content = document.createElement("div");
@@ -21,7 +69,7 @@ const displayInstructions = (instructions) => {
   $instructions.setAttribute(`type`, `1`);
   instructions.forEach((instruction) => {
     const $instruction = document.createElement(`li`);
-    const $text = document.createTextNode(instruction);
+    const $text = document.createTextNode(instruction.instruction);
     $instruction.appendChild($text);
     $instructions.appendChild($instruction);
   });
@@ -30,6 +78,7 @@ const displayInstructions = (instructions) => {
 
 const displayPlayerForm = ($cardContent) => {
   const $playerForm = document.createElement(`form`);
+  $playerForm.setAttribute(`id`, `player-form`);
   $cardContent.appendChild($playerForm);
 
   const $field = document.createElement(`div`);
@@ -55,13 +104,7 @@ const displayPlayerForm = ($cardContent) => {
   return $playerForm;
 };
 
-export const makeQuestionCardBody = (gif, options) => {
-  const $cardBody = document.getElementById(`card-body`);
-
-  const $content = document.createElement("div");
-  $content.classList.add(`content`);
-  $cardBody.appendChild($content);
-
+export const makeQuestionCardBody = ($content, gif, options) => {
   const $mainWrapper = document.createElement("div");
   $mainWrapper.classList.add(`columns`, `is-flex`, `is-flex-direction-column`);
   $content.appendChild($mainWrapper);
@@ -127,7 +170,7 @@ export const makeQuestionCardBody = (gif, options) => {
     $span.textContent = `${options[option]}`;
     $optionLabel.appendChild($span);
   });
-  return $cardBody;
+  return $mainWrapper;
 };
 
 export const makeCardFooter = (text, type, formId, event) => {
@@ -154,7 +197,7 @@ export const changeCardTitle = (title) => {
   return $title;
 };
 
-export const showWelcomeCard = () => {
+export const showWelcomeCard = (quiz, player) => {
   resetCardContent();
   resetCardFooter();
   changeCardTitle(`FRIENDS QUIZ`);
@@ -164,7 +207,9 @@ export const showWelcomeCard = () => {
     `Bienvenido, con este pequeño juego vamos a poner a prueba tu conocimiento en FRIENDS, la famosa serie de TV.`
   );
   $cardContent.appendChild($welcomeMessage);
-  makeCardFooter(`Siguiente`, `welcome`, ``, showInstructionsCard);
+  makeCardFooter(`Siguiente`, `welcome`, ``, () => {
+    showInstructionsCard(quiz, player);
+  });
 };
 
 const resetCardContent = () => {
@@ -189,21 +234,28 @@ const showPlayerFormCard = () => {
   changeCardTitle(`Complete los datos`);
   const $cardBody = document.getElementById(`card-body`);
   const $cardContent = makeCardContent($cardBody);
-  const $playerForm = displayPlayerForm($cardContent);
-  makeCardFooter(`¡Empezar!`, `welcome`, ``, showQuestionCard);
+  displayPlayerForm($cardContent);
+  const $playerForm = document.getElementById("player-form");
+  $playerForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const playerForm = new FormData(e.target);
+    const name = playerForm.get("name");
+    const isValid = validate(name);
+    if (isValid) {
+      player.name = name;
+      showQuestionCard();
+    }
+  });
+  makeCardFooter(`¡Empezar!`, `welcome`, `player-form`);
 };
 
-const showInstructionsCard = () => {
+const showInstructionsCard = (quiz, player) => {
   resetCardContent();
   resetCardFooter();
   changeCardTitle(`Instrucciones`);
   const $cardBody = document.getElementById(`card-body`);
   const $cardContent = makeCardContent($cardBody);
-  const $instructions = displayInstructions([
-    "Elegir una de las 3 opciones: A, B o C.",
-    "No hacer trampa",
-    "Seguir la regla N°2",
-  ]);
+  const $instructions = displayInstructions(quiz.instructions);
   $cardContent.appendChild($instructions);
   makeCardFooter(`Entendido`, `welcome`, ``, showPlayerFormCard);
 };
@@ -221,12 +273,21 @@ const showQuestionCard = async () => {
   );
   if (question.last) {
     data.quiz.questions.forEach((question, i) =>
-      question["correct-answer"] === userAnswers[i] ? player.score++ : false
+      question["correct-answer"] === userAnswers[i]
+        ? player.incrementScore()
+        : false
     );
+    console.log(player.score);
     showScoreCard();
   } else {
     changeCardTitle(question.question);
-    makeQuestionCardBody(question.gif, question["possible-answers"]);
+    const $cardBody = document.getElementById(`card-body`);
+    const $cardContent = makeCardContent($cardBody);
+    makeQuestionCardBody(
+      $cardContent,
+      question.gif,
+      question["possible-answers"]
+    );
     makeCardFooter(`Siguiente`, `question`, `options-form`);
     const $form = document.getElementById("options-form");
     $form.addEventListener("submit", (e) => {
@@ -239,12 +300,6 @@ const showQuestionCard = async () => {
   }
 };
 
-const getQuiz = async () => {
-  const response = await fetch(`./data/quiz.json`);
-  const quiz = await response.json();
-  return quiz;
-};
-
 const showScoreCard = () => {
   resetCardContent();
   resetCardFooter();
@@ -254,8 +309,19 @@ const showScoreCard = () => {
   const $gameOverMessage = setWelcomeMessage(
     `Felicidades ${player.name}, tu puntaje es de: ${player.score}`
   );
-  player.score = 0;
+  player.resetScore();
+  console.log(player.score);
   questionId = 1;
+  userAnswers.length = 0;
   $cardContent.appendChild($gameOverMessage);
   makeCardFooter(`¡Empezar de nuevo!`, ``, ``, showWelcomeCard);
+};
+
+const validate = (input) => {
+  debugger;
+  let isValid = true;
+  if (!input) {
+    isValid = false;
+  }
+  return isValid;
 };

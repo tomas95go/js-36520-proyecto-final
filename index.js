@@ -1,4 +1,4 @@
 //Alumno: González Oviedo Tomás Emiliano
-import { showWelcomeCard } from "./game.js";
+import { startGame } from "./game.js";
 
-showWelcomeCard();
+startGame();
