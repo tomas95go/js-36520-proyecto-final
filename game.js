@@ -228,7 +228,7 @@ const resetCardFooter = () => {
   return $cardFooter;
 };
 
-const showPlayerFormCard = () => {
+const showPlayerFormCard = (quiz, player) => {
   resetCardContent();
   resetCardFooter();
   changeCardTitle(`Complete los datos`);
@@ -243,7 +243,7 @@ const showPlayerFormCard = () => {
     const isValid = validate(name);
     if (isValid) {
       player.name = name;
-      showQuestionCard();
+      loadQuestion(quiz, player);
     }
   });
   makeCardFooter(`¡Empezar!`, `welcome`, `player-form`);
@@ -258,64 +258,68 @@ const showInstructionsCard = (quiz, player) => {
   const { instructions } = quiz;
   const $instructions = displayInstructions(instructions);
   $cardContent.appendChild($instructions);
-  makeCardFooter(`Entendido`, `welcome`, ``, showPlayerFormCard);
+  makeCardFooter(`Entendido`, `welcome`, ``, () => {
+    showPlayerFormCard(quiz, player);
+  });
 };
 
-const loadNextQuestion = () => {
-  questionId++;
-  showQuestionCard();
+const loadNextQuestion = (quiz, player, questionId) => {
+  questionId = questionId + 1;
+  showQuestionCard(quiz, player, questionId);
 };
-const showQuestionCard = async () => {
+
+const loadQuestion = (quiz, player) => {
+  const questionId = 1;
+  showQuestionCard(quiz, player, questionId);
+};
+const showQuestionCard = (quiz, player, questionId) => {
   resetCardContent();
   resetCardFooter();
-  const data = await getQuiz();
-  const question = data.quiz.questions.find(
+  const question = quiz.questions.find(
     (question) => question.id === questionId
   );
-  if (question.last) {
-    data.quiz.questions.forEach((question, i) =>
-      question["correct-answer"] === userAnswers[i]
+  if (questionId > quiz.questions.length) {
+    quiz.questions.forEach((question, i) =>
+      question.correctAnswer === player.answers[i]
         ? player.incrementScore()
         : false
     );
-    console.log(player.score);
-    showScoreCard();
+    showScoreCard(quiz, player);
   } else {
     changeCardTitle(question.question);
     const $cardBody = document.getElementById(`card-body`);
     const $cardContent = makeCardContent($cardBody);
-    makeQuestionCardBody(
-      $cardContent,
-      question.gif,
-      question["possible-answers"]
-    );
+    makeQuestionCardBody($cardContent, question.gif, question.possibleAnswers);
     makeCardFooter(`Siguiente`, `question`, `options-form`);
     const $form = document.getElementById("options-form");
     $form.addEventListener("submit", (e) => {
       e.preventDefault();
       const formPotencia = new FormData(e.target);
       const answer = formPotencia.get("question");
-      userAnswers.push(answer);
-      loadNextQuestion();
+      const isValid = validate(answer);
+      if (isValid) {
+        player.add(answer);
+        loadNextQuestion(quiz, player, questionId);
+      }
     });
   }
 };
 
-const showScoreCard = () => {
+const showScoreCard = (quiz, player) => {
   resetCardContent();
   resetCardFooter();
   changeCardTitle(`Game Over`);
   const $cardBody = document.getElementById(`card-body`);
   const $cardContent = makeCardContent($cardBody);
   const $gameOverMessage = setWelcomeMessage(
-    `Felicidades ${player.name}, tu puntaje es de: ${player.score}`
+    `${player.name}, tu puntaje es de: ${player.score}`
   );
   player.resetScore();
-  console.log(player.score);
-  questionId = 1;
-  userAnswers.length = 0;
+  player.resetAnswers();
   $cardContent.appendChild($gameOverMessage);
-  makeCardFooter(`¡Empezar de nuevo!`, ``, ``, showWelcomeCard);
+  makeCardFooter(`¡Empezar de nuevo!`, ``, ``, () => {
+    showWelcomeCard(quiz, player);
+  });
 };
 
 const validate = (input) => {
