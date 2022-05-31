@@ -255,7 +255,8 @@ const showInstructionsCard = (quiz, player) => {
   changeCardTitle(`Instrucciones`);
   const $cardBody = document.getElementById(`card-body`);
   const $cardContent = makeCardContent($cardBody);
-  const $instructions = displayInstructions(quiz.instructions);
+  const { instructions } = quiz;
+  const $instructions = displayInstructions(instructions);
   $cardContent.appendChild($instructions);
   makeCardFooter(`Entendido`, `welcome`, ``, showPlayerFormCard);
 };
@@ -318,7 +319,6 @@ const showScoreCard = () => {
 };
 
 const validate = (input) => {
-  debugger;
   let isValid = true;
   if (!input) {
     isValid = false;
