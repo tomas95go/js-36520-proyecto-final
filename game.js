@@ -234,46 +234,57 @@ const showPlayerFormCard = (quiz, player) => {
   changeCardTitle(`Complete los datos`);
   const $cardBody = document.getElementById(`card-body`);
   const $cardContent = makeCardContent($cardBody);
-  displayPlayerForm($cardContent);
-  const $playerForm = document.getElementById("player-form");
-  $playerForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const playerForm = new FormData(e.target);
-    const name = playerForm.get("name");
-    const isValid = validate(name);
-    if (isValid) {
-      player.name = name;
-      Toastify({
-        text: `¡Éxitos ${player.name}!`,
-        duration: 3000,
-        newWindow: true,
-        close: true,
-        gravity: "top", // `top` or `bottom`
-        position: "right", // `left`, `center` or `right`
-        stopOnFocus: true, // Prevents dismissing of toast on hover
-        className: "has-background-success",
-        style: {
-          background: "unset",
-        },
-      }).showToast();
+  const playerLocalStorage = JSON.parse(localStorage.getItem("player"));
+  if (!playerLocalStorage.name) {
+    displayPlayerForm($cardContent);
+    const $playerForm = document.getElementById("player-form");
+    $playerForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const playerForm = new FormData(e.target);
+      const name = playerForm.get("name");
+      const isValid = validate(name);
+      if (isValid) {
+        player.name = name;
+        localStorage.setItem("player", JSON.stringify(player));
+        Toastify({
+          text: `¡Éxitos ${player.name}!`,
+          duration: 3000,
+          newWindow: true,
+          close: true,
+          gravity: "top", // `top` or `bottom`
+          position: "right", // `left`, `center` or `right`
+          stopOnFocus: true, // Prevents dismissing of toast on hover
+          className: "has-background-success",
+          style: {
+            background: "unset",
+          },
+        }).showToast();
+        loadQuestion(quiz, player);
+      } else {
+        Toastify({
+          text: "El campo nombre no puede estar vacío",
+          duration: 3000,
+          newWindow: true,
+          close: true,
+          gravity: "top", // `top` or `bottom`
+          position: "right", // `left`, `center` or `right`
+          stopOnFocus: true, // Prevents dismissing of toast on hover
+          className: "has-background-warning-dark",
+          style: {
+            background: "unset",
+          },
+        }).showToast();
+      }
+    });
+    makeCardFooter(`¡Empezar!`, `welcome`, `player-form`);
+  } else {
+    const $greeting = document.createElement("h3");
+    $greeting.textContent = `Bienvenido nuevamente: ${playerLocalStorage.name}`;
+    $cardContent.appendChild($greeting);
+    makeCardFooter(`¡Empezar!`, `welcome`, ``, () => {
       loadQuestion(quiz, player);
-    } else {
-      Toastify({
-        text: "El campo nombre no puede estar vacío",
-        duration: 3000,
-        newWindow: true,
-        close: true,
-        gravity: "top", // `top` or `bottom`
-        position: "right", // `left`, `center` or `right`
-        stopOnFocus: true, // Prevents dismissing of toast on hover
-        className: "has-background-warning-dark",
-        style: {
-          background: "unset",
-        },
-      }).showToast();
-    }
-  });
-  makeCardFooter(`¡Empezar!`, `welcome`, `player-form`);
+    });
+  }
 };
 
 const showInstructionsCard = (quiz, player) => {
@@ -365,9 +376,17 @@ const showScoreCard = (quiz, player) => {
   changeCardTitle(`Game Over`);
   const $cardBody = document.getElementById(`card-body`);
   const $cardContent = makeCardContent($cardBody);
-  const $gameOverMessage = setWelcomeMessage(
-    `${player.name}, tu puntaje es de: ${player.score}`
-  );
+  let $gameOverMessage = ``;
+  const playerLocalStorage = JSON.parse(localStorage.getItem("player"));
+  if (!playerLocalStorage.name) {
+    $gameOverMessage = setWelcomeMessage(
+      `${player.name}, tu puntaje es de: ${player.score}`
+    );
+  } else {
+    $gameOverMessage = setWelcomeMessage(
+      `${playerLocalStorage.name}, tu puntaje es de: ${player.score}`
+    );
+  }
   player.resetScore();
   player.resetAnswers();
   $cardContent.appendChild($gameOverMessage);
