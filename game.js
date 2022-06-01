@@ -315,8 +315,8 @@ const showQuestionCard = (quiz, player, questionId) => {
     const $form = document.getElementById("options-form");
     $form.addEventListener("submit", (e) => {
       e.preventDefault();
-      const formPotencia = new FormData(e.target);
-      const answer = formPotencia.get("question");
+      const formQuestion = new FormData(e.target);
+      const answer = formQuestion.get("question");
       const isValid = validate(answer);
       if (isValid) {
         showQuestionAnsweredToast();
