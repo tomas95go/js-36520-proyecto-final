@@ -64,7 +64,7 @@ const makeCardContent = ($cardBody) => {
   return $content;
 };
 
-const setWelcomeMessage = (message) => {
+const setMessage = (message) => {
   const $message = document.createElement(`h2`);
   $message.textContent = message;
   return $message;
@@ -210,7 +210,7 @@ export const showWelcomeCard = (quiz, player) => {
   changeCardTitle(`FRIENDS QUIZ`);
   const $cardBody = document.getElementById(`card-body`);
   const $cardContent = makeCardContent($cardBody);
-  const $welcomeMessage = setWelcomeMessage(
+  const $welcomeMessage = setMessage(
     `Bienvenido, con este pequeño juego vamos a poner a prueba tu conocimiento en FRIENDS, la famosa serie de TV.`
   );
   $cardContent.appendChild($welcomeMessage);
@@ -338,11 +338,11 @@ const showScoreCard = (quiz, player) => {
   let $gameOverMessage = ``;
   const playerLocalStorage = JSON.parse(localStorage.getItem("player"));
   if (!playerLocalStorage.name) {
-    $gameOverMessage = setWelcomeMessage(
+    $gameOverMessage = setMessage(
       `${player.name}, tu puntaje es de: ${player.score}`
     );
   } else {
-    $gameOverMessage = setWelcomeMessage(
+    $gameOverMessage = setMessage(
       `${playerLocalStorage.name}, tu puntaje es de: ${player.score}`
     );
   }
