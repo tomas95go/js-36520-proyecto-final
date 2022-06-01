@@ -180,7 +180,7 @@ export const makeQuestionCardBody = ($content, gif, options) => {
   return $mainWrapper;
 };
 
-export const makeCardFooter = (text, type, formId, event) => {
+export const makeCardFooter = (text, formId, event) => {
   const $cardFooter = document.getElementById(`card-footer`);
 
   const $button = document.createElement(`button`);
@@ -214,7 +214,7 @@ export const showWelcomeCard = (quiz, player) => {
     `Bienvenido, con este pequeño juego vamos a poner a prueba tu conocimiento en FRIENDS, la famosa serie de TV.`
   );
   $cardContent.appendChild($welcomeMessage);
-  makeCardFooter(`Siguiente`, `welcome`, ``, () => {
+  makeCardFooter(`Siguiente`, ``, () => {
     showInstructionsCard(quiz, player);
   });
 };
@@ -235,6 +235,13 @@ const resetCardFooter = () => {
   return $cardFooter;
 };
 
+const greetPlayerOn = ($cardContent, playerName) => {
+  const $greeting = document.createElement("h3");
+  $greeting.textContent = `Bienvenido nuevamente: ${playerName}`;
+  $cardContent.appendChild($greeting);
+  return $cardContent;
+};
+
 const showPlayerFormCard = (quiz, player) => {
   resetCardContent();
   resetCardFooter();
@@ -245,29 +252,32 @@ const showPlayerFormCard = (quiz, player) => {
   if (!playerLocalStorage) {
     displayPlayerForm($cardContent);
     const $playerForm = document.getElementById("player-form");
-    $playerForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const playerForm = new FormData(e.target);
-      const name = playerForm.get("name");
-      const isValid = validate(name);
-      if (isValid) {
-        player.name = name;
-        localStorage.setItem("player", JSON.stringify(player));
-        showEncouragementToast(player.name);
-        loadQuestion(quiz, player);
-      } else {
-        showNotValidNameToast();
-      }
-    });
-    makeCardFooter(`¡Empezar!`, `welcome`, `player-form`);
+    capturePlayerName($playerForm, quiz, player);
+    makeCardFooter(`¡Empezar!`, `player-form`);
   } else {
-    const $greeting = document.createElement("h3");
-    $greeting.textContent = `Bienvenido nuevamente: ${playerLocalStorage.name}`;
-    $cardContent.appendChild($greeting);
-    makeCardFooter(`¡Empezar!`, `welcome`, ``, () => {
+    greetPlayerOn($cardContent, playerLocalStorage.name);
+    makeCardFooter(`¡Empezar!`, ``, () => {
       loadQuestion(quiz, player);
     });
   }
+};
+
+const capturePlayerName = ($form, quiz, player) => {
+  $playerForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const playerForm = new FormData(e.target);
+    const name = playerForm.get("name");
+    const isValid = validate(name);
+    if (isValid) {
+      player.name = name;
+      localStorage.setItem("player", JSON.stringify(player));
+      showEncouragementToast(player.name);
+      loadQuestion(quiz, player);
+    } else {
+      showNotValidNameToast();
+    }
+  });
+  return $playerForm;
 };
 
 const showInstructionsCard = (quiz, player) => {
@@ -279,7 +289,7 @@ const showInstructionsCard = (quiz, player) => {
   const { instructions } = quiz;
   const $instructions = displayInstructions(instructions);
   $cardContent.appendChild($instructions);
-  makeCardFooter(`Entendido`, `welcome`, ``, () => {
+  makeCardFooter(`Entendido`, ``, () => {
     showPlayerFormCard(quiz, player);
   });
 };
@@ -300,33 +310,43 @@ const showQuestionCard = (quiz, player, questionId) => {
     (question) => question.id === questionId
   );
   if (questionId > quiz.questions.length) {
-    quiz.questions.forEach((question, i) =>
-      question.correctAnswer === player.answers[i]
-        ? player.incrementScore()
-        : false
-    );
+    evaluatePlayerAnswers(quiz, player);
     showScoreCard(quiz, player);
   } else {
     changeCardTitle(question.question);
     const $cardBody = document.getElementById(`card-body`);
     const $cardContent = makeCardContent($cardBody);
     makeQuestionCardBody($cardContent, question.gif, question.possibleAnswers);
-    makeCardFooter(`Siguiente`, `question`, `options-form`);
+    makeCardFooter(`Siguiente`, `options-form`);
     const $form = document.getElementById("options-form");
-    $form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const formQuestion = new FormData(e.target);
-      const answer = formQuestion.get("question");
-      const isValid = validate(answer);
-      if (isValid) {
-        showQuestionAnsweredToast();
-        player.add(answer);
-        loadNextQuestion(quiz, player, questionId);
-      } else {
-        showNoOptionSelectedToast();
-      }
-    });
+    capturePlayerAnswer($form, quiz, player, questionId);
   }
+};
+
+const capturePlayerAnswer = ($form, quiz, player, questionId) => {
+  $form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const formQuestion = new FormData(e.target);
+    const answer = formQuestion.get("question");
+    const isValid = validate(answer);
+    if (isValid) {
+      showQuestionAnsweredToast();
+      player.add(answer);
+      loadNextQuestion(quiz, player, questionId);
+    } else {
+      showNoOptionSelectedToast();
+    }
+  });
+  return $form;
+};
+
+const evaluatePlayerAnswers = (quiz, player) => {
+  quiz.questions.forEach((question, i) =>
+    question.correctAnswer === player.answers[i]
+      ? player.incrementScore()
+      : false
+  );
+  return player.answers;
 };
 
 const showScoreCard = (quiz, player) => {
@@ -349,7 +369,7 @@ const showScoreCard = (quiz, player) => {
   player.resetScore();
   player.resetAnswers();
   $cardContent.appendChild($gameOverMessage);
-  makeCardFooter(`¡Empezar de nuevo!`, ``, ``, () => {
+  makeCardFooter(`¡Empezar de nuevo!`, ``, () => {
     showWelcomeCard(quiz, player);
   });
 };
