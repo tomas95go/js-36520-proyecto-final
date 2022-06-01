@@ -153,11 +153,11 @@ export const makeQuestionCardBody = ($content, gif, options) => {
 
   Object.keys(options).forEach((option) => {
     const $singleOptionColumn = document.createElement("div");
-    $singleOptionColumn.classList.add(`column`);
+    $singleOptionColumn.classList.add(`column`, `is-align-self-flex-start`);
     $optionsWrapper.appendChild($singleOptionColumn);
 
     const $optionLabel = document.createElement("label");
-    $optionLabel.classList.add(`radio`);
+    $optionLabel.classList.add(`radio`, `is-flex`, `is-align-items-center`);
     $singleOptionColumn.appendChild($optionLabel);
 
     const $optionInput = document.createElement("input");
@@ -167,6 +167,7 @@ export const makeQuestionCardBody = ($content, gif, options) => {
     $optionLabel.appendChild($optionInput);
 
     const $span = document.createElement("span");
+    $span.classList.add(`mx-1`);
     $span.textContent = `${options[option]}`;
     $optionLabel.appendChild($span);
   });
@@ -235,7 +236,7 @@ const showPlayerFormCard = (quiz, player) => {
   const $cardBody = document.getElementById(`card-body`);
   const $cardContent = makeCardContent($cardBody);
   const playerLocalStorage = JSON.parse(localStorage.getItem("player"));
-  if (!playerLocalStorage.name) {
+  if (!playerLocalStorage) {
     displayPlayerForm($cardContent);
     const $playerForm = document.getElementById("player-form");
     $playerForm.addEventListener("submit", (e) => {
