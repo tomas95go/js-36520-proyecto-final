@@ -263,7 +263,7 @@ const showPlayerFormCard = (quiz, player) => {
 };
 
 const capturePlayerName = ($form, quiz, player) => {
-  $playerForm.addEventListener("submit", (e) => {
+  $form.addEventListener("submit", (e) => {
     e.preventDefault();
     const playerForm = new FormData(e.target);
     const name = playerForm.get("name");
@@ -277,7 +277,7 @@ const capturePlayerName = ($form, quiz, player) => {
       showNotValidNameToast();
     }
   });
-  return $playerForm;
+  return $form;
 };
 
 const showInstructionsCard = (quiz, player) => {
