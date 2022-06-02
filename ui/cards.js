@@ -1,4 +1,17 @@
 //Todo lo que sea cartas o sus contenidos van en este archivo
+export const makeCardContent = ($cardBody) => {
+  const $content = document.createElement("div");
+  $content.classList.add(`content`);
+  $cardBody.appendChild($content);
+  return $content;
+};
+
+export const setMessage = (message) => {
+  const $message = document.createElement(`h2`);
+  $message.textContent = message;
+  return $message;
+};
+
 export const displayPlayerForm = ($cardContent) => {
   const $playerForm = document.createElement(`form`);
   $playerForm.setAttribute(`id`, `player-form`);

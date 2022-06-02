@@ -9,7 +9,7 @@ import {
   showNotValidNameToast,
   showQuestionAnsweredToast,
 } from "./ui/toasts.js";
-import { displayPlayerForm } from "./ui/cards.js";
+import { displayPlayerForm, makeCardContent, setMessage } from "./ui/cards.js";
 
 const getQuizData = async () => {
   const response = await fetch(`./data/quiz.json`);
@@ -56,19 +56,6 @@ export const startGame = async () => {
   const quiz = await setUpQuiz();
   const player = setUpPlayer();
   showWelcomeCard(quiz, player);
-};
-
-const makeCardContent = ($cardBody) => {
-  const $content = document.createElement("div");
-  $content.classList.add(`content`);
-  $cardBody.appendChild($content);
-  return $content;
-};
-
-const setMessage = (message) => {
-  const $message = document.createElement(`h2`);
-  $message.textContent = message;
-  return $message;
 };
 
 const displayInstructions = (instructions) => {
