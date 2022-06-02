@@ -8,7 +8,8 @@ import {
   showEncouragementToast,
   showNotValidNameToast,
   showQuestionAnsweredToast,
-} from "./toasts.js";
+} from "./ui/toasts.js";
+import { displayPlayerForm } from "./ui/cards.js";
 
 const getQuizData = async () => {
   const response = await fetch(`./data/quiz.json`);
@@ -81,35 +82,6 @@ const displayInstructions = (instructions) => {
   });
   return $instructions;
 };
-
-const displayPlayerForm = ($cardContent) => {
-  const $playerForm = document.createElement(`form`);
-  $playerForm.setAttribute(`id`, `player-form`);
-  $cardContent.appendChild($playerForm);
-
-  const $field = document.createElement(`div`);
-  $field.classList.add(`field`);
-  $playerForm.appendChild($field);
-
-  const $label = document.createElement(`label`);
-  $label.classList.add(`label`);
-  $label.textContent = `Nombre:`;
-  $field.appendChild($label);
-
-  const $control = document.createElement(`div`);
-  $control.classList.add(`control`);
-  $field.appendChild($control);
-
-  const $input = document.createElement(`input`);
-  $input.classList.add(`input`);
-  $input.setAttribute("name", "name");
-  $input.setAttribute(`type`, `text`);
-  $input.setAttribute(`placeholder`, `Nombre`);
-  $control.appendChild($input);
-
-  return $playerForm;
-};
-
 export const makeQuestionCardBody = ($content, gif, options) => {
   const $mainWrapper = document.createElement("div");
   $mainWrapper.classList.add(`columns`, `is-flex`, `is-flex-direction-column`);
