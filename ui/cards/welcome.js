@@ -1,3 +1,4 @@
+//Muestra la carta de bienvenida.
 import {
   resetCardContent,
   resetCardFooter,

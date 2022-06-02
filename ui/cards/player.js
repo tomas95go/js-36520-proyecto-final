@@ -1,3 +1,4 @@
+//Muestra el formulario para obtener el nombre del jugador.
 import {
   resetCardContent,
   resetCardFooter,
@@ -13,6 +14,7 @@ export const showPlayerFormCard = (quiz, player, capturePlayerAnswer) => {
   changeCardTitle(`Complete los datos`);
   const $cardBody = document.getElementById(`card-body`);
   const $cardContent = makeCardContent($cardBody);
+  //Buscamos el jugador en el localStorage para saludarlo, en caso de que no esté, capturamos su nombre y lo cargamos al localStorage.
   const playerLocalStorage = JSON.parse(localStorage.getItem("player"));
   if (!playerLocalStorage) {
     displayPlayerForm($cardContent);

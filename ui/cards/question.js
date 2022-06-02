@@ -1,3 +1,4 @@
+//Este archivo se encarga de mostrar las cartas de las preguntas. El contenido es generado dinámicamente.
 import {
   resetCardContent,
   resetCardFooter,
@@ -19,9 +20,11 @@ export const showQuestionCard = (
     (question) => question.id === questionId
   );
   if (questionId > quiz.questions.length) {
+    //Si el id actual de una pregunta, supera al mayor id de las preguntas. Se muestra la carta del puntaje. Ya que no hay más preguntas.
     evaluatePlayerAnswers(quiz, player);
     showScoreCard(quiz, player);
   } else {
+    //Muestra las preguntas de manera dinámica.
     changeCardTitle(question.question);
     const $cardBody = document.getElementById(`card-body`);
     const $cardContent = makeCardContent($cardBody);

@@ -1,3 +1,4 @@
+//Agrupo todos los toasts aquí para ser utilizados en otros archivos.
 export const showNoOptionSelectedToast = () => {
   return Toastify({
     text: "Por favor, elija una opción para continuar",

@@ -1,3 +1,4 @@
+//Muestra la carta del puntaje
 import {
   resetCardContent,
   resetCardFooter,
@@ -16,6 +17,7 @@ export const showScoreCard = (quiz, player) => {
   const $cardBody = document.getElementById(`card-body`);
   const $cardContent = makeCardContent($cardBody);
   let $gameOverMessage = ``;
+  //Busco al jugador en el localStorage.
   const playerLocalStorage = JSON.parse(localStorage.getItem("player"));
   if (!playerLocalStorage.name) {
     const quote = displayQuote(quiz.quotes, player.score);
@@ -28,6 +30,7 @@ export const showScoreCard = (quiz, player) => {
       `${playerLocalStorage.name}, tu puntaje es de: ${player.score}.\n${quote}`
     );
   }
+  //Empieza de nuevo el juego
   player.resetScore();
   player.resetAnswers();
   $cardContent.appendChild($gameOverMessage);

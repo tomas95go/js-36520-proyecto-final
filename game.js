@@ -12,6 +12,11 @@ import {
 import { showWelcomeCard } from "./ui/cards/welcome.js";
 import { showQuestionCard } from "./ui/cards/question.js";
 
+/*
+  Este es el archivo game.js.
+  El objetivo de este archivo es encapsular la lógica del juego.
+*/
+
 const getQuizData = async () => {
   const response = await fetch(`./data/quiz.json`);
   const data = await response.json();
@@ -76,6 +81,10 @@ export const capturePlayerName = ($form, quiz, player) => {
 };
 
 const loadNextQuestion = (quiz, player, questionId) => {
+  /*
+    la función loadNextQuestion es utilizada para empezar aumentar el id de las preguntas, de esa manera.
+    Me permite buscar las siguientes preguntas, del id 1, pasa al 2, del 2 al 3, etc.
+  */
   questionId = questionId + 1;
   showQuestionCard(
     quiz,
@@ -87,6 +96,9 @@ const loadNextQuestion = (quiz, player, questionId) => {
 };
 
 export const loadQuestion = (quiz, player) => {
+  /*
+    la función loadQuestion es utilizada para empezar por la primera pregunta (id 1) en el cuestionario.
+  */
   const questionId = 1;
   showQuestionCard(
     quiz,
@@ -132,6 +144,7 @@ const capturePlayerAnswer = ($form, quiz, player, questionId) => {
 };
 
 const searchQuote = (quotes, playerScore) => {
+  //Busco la quote (cita) en base al puntaje del jugador.
   const gameOverQuote = quotes.find(
     ({ scoreBottom, scoreTop }) =>
       playerScore >= scoreBottom && playerScore <= scoreTop
@@ -140,6 +153,7 @@ const searchQuote = (quotes, playerScore) => {
 };
 
 export const displayQuote = (quotes, playerScore) => {
+  //Despliego la quote (cita) encontrada.
   const quote = searchQuote(quotes, playerScore);
   return quote;
 };

@@ -1,3 +1,4 @@
+//Este archivo tiene como objetivo contener las funciones mas generales/comunes/repetitivas que utilizan la mayoría de las cartas.
 export const resetCardContent = () => {
   const $cardBody = document.getElementById(`card-body`);
   while ($cardBody.firstChild) {

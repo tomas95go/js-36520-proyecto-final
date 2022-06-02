@@ -1,3 +1,4 @@
+//Este archivo muestra la carta de las instrucciones.
 import {
   resetCardContent,
   resetCardFooter,
