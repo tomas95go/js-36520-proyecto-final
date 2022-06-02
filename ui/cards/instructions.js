@@ -1,3 +1,13 @@
+import {
+  resetCardContent,
+  resetCardFooter,
+  changeCardTitle,
+  makeCardFooter,
+  makeCardContent,
+} from "./general.js";
+import { showPlayerFormCard } from "./player.js";
+import { capturePlayerName } from "../../game.js";
+
 export const showInstructionsCard = (quiz, player) => {
   resetCardContent();
   resetCardFooter();

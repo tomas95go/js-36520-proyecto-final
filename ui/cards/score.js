@@ -1,4 +1,14 @@
-const showScoreCard = (quiz, player) => {
+import {
+  resetCardContent,
+  resetCardFooter,
+  changeCardTitle,
+  makeCardFooter,
+  makeCardContent,
+  setMessage,
+} from "./general.js";
+
+import { showWelcomeCard } from "./welcome.js";
+export const showScoreCard = (quiz, player) => {
   resetCardContent();
   resetCardFooter();
   changeCardTitle(`Game Over`);

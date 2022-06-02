@@ -1,3 +1,11 @@
+import {
+  resetCardContent,
+  resetCardFooter,
+  changeCardTitle,
+  makeCardFooter,
+  makeCardContent,
+} from "./general.js";
+import { showScoreCard } from "./score.js";
 export const showQuestionCard = (
   quiz,
   player,

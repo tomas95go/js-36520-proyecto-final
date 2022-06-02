@@ -1,3 +1,14 @@
+import {
+  resetCardContent,
+  resetCardFooter,
+  changeCardTitle,
+  makeCardFooter,
+  makeCardContent,
+  setMessage,
+} from "./general.js";
+
+import { showInstructionsCard } from "./instructions.js";
+
 export const showWelcomeCard = (quiz, player) => {
   resetCardContent();
   resetCardFooter();

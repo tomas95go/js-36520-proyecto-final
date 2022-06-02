@@ -1,4 +1,13 @@
-const showPlayerFormCard = (quiz, player, capturePlayerAnswer) => {
+import {
+  resetCardContent,
+  resetCardFooter,
+  changeCardTitle,
+  makeCardFooter,
+  makeCardContent,
+} from "./general.js";
+import { capturePlayerName, loadQuestion } from "../../game.js";
+import { greetPlayerOn } from "../greeting.js";
+export const showPlayerFormCard = (quiz, player, capturePlayerAnswer) => {
   resetCardContent();
   resetCardFooter();
   changeCardTitle(`Complete los datos`);

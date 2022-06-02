@@ -9,7 +9,8 @@ import {
   showNotValidNameToast,
   showQuestionAnsweredToast,
 } from "./ui/toasts.js";
-import { showQuestionCard, showWelcomeCard } from "./ui/cards.js";
+import { showWelcomeCard } from "./ui/cards/welcome.js";
+import { showQuestionCard } from "./ui/cards/question.js";
 
 const getQuizData = async () => {
   const response = await fetch(`./data/quiz.json`);
