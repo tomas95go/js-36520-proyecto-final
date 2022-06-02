@@ -5,6 +5,5 @@ export class Question {
     this.gif = gif;
     this.possibleAnswers = possibleAnswers;
     this.correctAnswer = correctAnswer;
-    this.last = last;
   }
 }

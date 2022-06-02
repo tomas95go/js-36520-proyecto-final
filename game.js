@@ -42,9 +42,7 @@ const setUpQuiz = async () => {
         quote.quote
       )
   );
-  const gameOver = false;
-  const isReady = true;
-  const quiz = new Quiz(questions, quotes, instructions, gameOver, isReady);
+  const quiz = new Quiz(questions, quotes, instructions);
   return quiz;
 };
 
