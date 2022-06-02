@@ -130,3 +130,16 @@ const capturePlayerAnswer = ($form, quiz, player, questionId) => {
   });
   return $form;
 };
+
+const searchQuote = (quotes, playerScore) => {
+  const gameOverQuote = quotes.find(
+    ({ scoreBottom, scoreTop }) =>
+      playerScore >= scoreBottom && playerScore <= scoreTop
+  ).quote;
+  return gameOverQuote;
+};
+
+export const displayQuote = (quotes, playerScore) => {
+  const quote = searchQuote(quotes, playerScore);
+  return quote;
+};
